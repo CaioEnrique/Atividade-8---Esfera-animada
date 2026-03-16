@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esfera com Mudança de Cor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .sphere {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 20px 30px rgba(0, 0, 0, 0.3),
+                inset 0 -20px 30px rgba(0, 0, 0, 0.6),
+                inset 20px 20px 40px rgba(255, 255, 255, 0.8);
+            background: radial-gradient(circle at 30% 30%, 
+                                      rgba(255, 255, 255, 0.9) 0%, 
+                                      rgba(255, 255, 255, 0.3) 30%, 
+                                      rgba(0, 0, 0, 0.3) 80%);
+        }
+
+        .sphere::before {
+            content: '';
+            position: absolute;
+            top: 1%;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                                      rgba(255, 255, 255, 0.8) 0%, 
+                                      rgba(255, 255, 255, 0.1) 50%, 
+                                      transparent 80%);
+            pointer-events: none;
+        }
+
+        .sphere::after {
+            content: '';
+            position: absolute;
+            bottom: 5%;
+            right: 5%;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            filter: blur(10px);
+            opacity: 0.6;
+        }
+
+        .sphere:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 25px 35px rgba(0, 0, 0, 0.4),
+                inset 0 -20px 30px rgba(0, 0, 0, 0.7),
+                inset 25px 25px 45px rgba(255, 255, 255, 0.9);
+        }
+
+        .color-info {
+            margin-top: 20px;
+            color: white;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sphere" id="sphere"></div>
+        <div class="color-info" id="colorInfo">Passe o mouse para mudar a cor</div>
+    </div>
+
+    <script>
+        const sphere = document.getElementById('sphere');
+        const colorInfo = document.getElementById('colorInfo');
+
+        function getRandomColor() {
+            // Gerar valores aleatórios para RGB
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            
+            // Retornar a cor no formato RGB
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        sphere.addEventListener('mouseenter', function() {
+            // Gerar cor aleatória
+            const randomColor = getRandomColor();
+            
+            // Aplicar a cor de fundo mantendo o efeito 3D
+            this.style.backgroundColor = randomColor;
+            
+            // Ajustar o radial gradient para combinar com a nova cor
+            this.style.background = `radial-gradient(circle at 30% 30%, 
+                                      rgba(255, 255, 255, 0.9) 0%, 
+                                      rgba(255, 255, 255, 0.3) 30%, 
+                                      ${randomColor} 80%)`;
+            
+            // Mostrar a cor atual
+            colorInfo.textContent = `Cor atual: ${randomColor}`;
+            colorInfo.style.color = 'white';
+        });
+
+        // Cor inicial
+        sphere.style.backgroundColor = '#ff6b6b';
+        sphere.style.background = 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.3) 30%, #ff6b6b 80%)';
+    </script>
+</body>
+</html>
